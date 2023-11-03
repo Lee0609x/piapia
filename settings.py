@@ -21,3 +21,5 @@ DB_INIT_SQL_FILE_NAME = 'init.sql'
 # LOG
 LOG_FOLDER_NAME = 'logs'
 LOG_LEVEL = 'INFO'
+# API
+API_PREFIX = '/api'

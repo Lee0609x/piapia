@@ -5,7 +5,7 @@ __author__ = 'Lee0609x@163.com'
 
 import os
 
-from flask import Flask, render_template
+from flask import Flask
 import settings
 from app.api.auth import manager as auth_manager
 from app.db.database import db
@@ -13,34 +13,25 @@ from app.db.database import db
 '''
 flask app
 '''
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/')
+# 蓝图注册
+app.register_blueprint(auth_manager, url_prefix=f'{settings.API_PREFIX}/auth')
+
+# SQLAlchemy初始化
 sqlite = os.path.join(settings.project_path(), settings.DB_FOLDER_NAME, settings.DB_FILE_NAME)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + sqlite
 db.init_app(app)
-app.register_blueprint(auth_manager, url_prefix='/auth')
 
 
 @app.route('/')
 def index():
-    name = 'test'
-    return render_template('index.html', name=name)
+    return app.send_static_file('index.html')
 
 
-# 自定义错误页面
+# 当使用前后端一体化部署，vue router使用history模式路由时，地址栏上的地址首先经过flask，未被flask路由的地址交由前端路由处理
 @app.errorhandler(404)
-def page_404():
-    return render_template('error/404.html')
-
-
-@app.errorhandler(500)
-def page_500():
-    return render_template('error/500.html')
-
-
-# 模板全局上下文
-@app.context_processor
-def context_map():
-    return dict(gogo='gogo', go='go')
+def page_404(error):
+    return app.send_static_file('index.html')
 
 
 def run():
