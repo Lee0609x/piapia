@@ -14,6 +14,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Vue Build
+      run: |
+        npm install
+        npm run build
+    - name: Front End Resources Copy
+      run: |
+        ls -al
+        rm -rf app/static/.*
+        cp front_end/dist.* app/static
     - name: Get Version
       id: vars
       run: echo ::set-output name=RELEASE_VERSION::$(echo ${GITHUB_REF:11})

@@ -165,5 +165,5 @@ sqlite/*.db
 # log
 logs
 
-#front end build resources
+# front end build resources
 app/static
