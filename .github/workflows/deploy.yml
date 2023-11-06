@@ -20,7 +20,7 @@ jobs:
         npm run --prefix front_end build
     - name: Front End Resources Copy
       run: |
-        rm -rf app/static/.*
+        mkdir app/static
         cp front_end/dist/.* app/static
     - name: Get Version
       id: vars
