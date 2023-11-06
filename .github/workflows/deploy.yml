@@ -25,13 +25,12 @@ jobs:
     - name: Get Version
       run: |
         echo "RELEASE_VERSION=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_ENV"
-        echo ${{ env.RELEASE_VERSION }}
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag lee0609x/piapia:$RELEASE_VERSION
+      run: docker build . --file Dockerfile --tag lee0609x/piapia:${{ env.RELEASE_VERSION }}
     - name: Login to Registry
       run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
     - name: Push Image
-      run: docker push lee0609x/piapia:$RELEASE_VERSION
+      run: docker push lee0609x/piapia:${{ env.RELEASE_VERSION }}
     - name: SSH
       uses: appleboy/ssh-action@v1.0.0
       with:
