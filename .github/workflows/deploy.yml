@@ -17,7 +17,7 @@ jobs:
     - name: Vue Build
       run: |
         npm install --prefix front_end
-        npm run --prefix front_end build:prod
+        npm run --prefix front_end build
     - name: Front End Resources Copy
       run: |
         ls -al
