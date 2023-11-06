@@ -23,8 +23,7 @@ jobs:
         mkdir app/static
         mv front_end/dist/* app/static/
     - name: Get Version
-      id: vars
-      run: echo ::set-output name=RELEASE_VERSION::$(echo ${GITHUB_REF:11})
+      run: echo "branch=${GITHUB_REF:11}" >> $RELEASE_VERSION
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag lee0609x/python-training:${{ steps.vars.outputs.RELEASE_VERSION }}
     - name: Login to Registry
@@ -39,7 +38,7 @@ jobs:
         password: ${{ secrets.CLOUD_PASSWORD }}
         port: 22
         script: |
-          docker pull lee0609x/python-training:${{ steps.vars.outputs.RELEASE_VERSION }}
+          docker pull lee0609x/python-training:${{ RELEASE_VERSION }}
           docker stop python-training
           docker rm `docker ps -a | grep Exited | grep python-training | awk '{print $1}'`
           docker rmi `docker images | grep none | grep "lee0609x/python-training" | awk '{print $3}'`
