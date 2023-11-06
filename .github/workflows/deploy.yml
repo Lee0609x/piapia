@@ -40,8 +40,8 @@ jobs:
         password: ${{ secrets.CLOUD_PASSWORD }}
         port: 22
         script: |
-          docker pull lee0609x/piapia:${{ RELEASE_VERSION }}
+          docker pull lee0609x/piapia:${{ GITHUB_ENV.RELEASE_VERSION }}
           docker stop piapia
           docker rm `docker ps -a | grep Exited | grep piapia | awk '{print $1}'`
           docker rmi `docker images | grep none | grep "lee0609x/piapia" | awk '{print $3}'`
-          docker run --name piapia -p 80:80 -d lee0609x/piapia:${{ RELEASE_VERSION }}
+          docker run --name piapia -p 80:80 -d lee0609x/piapia:${{ GITHUB_ENV.RELEASE_VERSION }}
