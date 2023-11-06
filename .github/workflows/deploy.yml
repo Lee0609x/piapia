@@ -20,9 +20,8 @@ jobs:
         npm run --prefix front_end build
     - name: Front End Resources Copy
       run: |
-        ls -al
         rm -rf app/static/.*
-        cp front_end/dist.* app/static
+        cp front_end/dist/.* app/static
     - name: Get Version
       id: vars
       run: echo ::set-output name=RELEASE_VERSION::$(echo ${GITHUB_REF:11})
