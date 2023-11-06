@@ -14,6 +14,8 @@ def project_path():
     return os.path.dirname(os.path.realpath(__file__))
 
 
+# APP
+SERVER_PORT = '80'
 # DB
 DB_FOLDER_NAME = 'sqlite'
 DB_FILE_NAME = 'app.db'

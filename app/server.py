@@ -35,4 +35,4 @@ def page_404(error):
 
 
 def run():
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="0.0.0.0", port=settings.SERVER_PORT)
