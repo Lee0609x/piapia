@@ -1,5 +1,5 @@
 FROM python:3.11
 ADD . ./piapia
 WORKDIR /piapia
-CMD ["source", "venv/bin/activate"]
+RUN pip install -r requirements.txt
 CMD ["python3", "deploy.py"]
