@@ -22,6 +22,12 @@ jobs:
       run: |
         mkdir app/static
         mv front_end/dist/* app/static/
+        rm -rf front_end
+    - name: Python VENV
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt
     - name: Get Version
       run: |
         echo "RELEASE_VERSION=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_ENV"
