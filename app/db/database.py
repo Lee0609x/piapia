@@ -20,7 +20,7 @@ def init_sqlite():
     logger.info('初始化sqlite...')
     sqlite_folder = os.path.join(settings.project_path(), settings.DB_FOLDER_NAME)
     sqlite = os.path.join(sqlite_folder, settings.DB_FILE_NAME)
-    sql_script = os.path.join(sqlite_folder, settings.DB_INIT_SQL_FILE_NAME)
+    sql_script = os.path.join(settings.project_path(), settings.DB_INIT_SQL_FOLDER_NAME, settings.DB_INIT_SQL_FILE_NAME)
     if not os.path.exists(sqlite_folder):
         os.mkdir(sqlite_folder)
     if not os.path.exists(sqlite):
