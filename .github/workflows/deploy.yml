@@ -21,7 +21,7 @@ jobs:
     - name: Front End Resources Copy
       run: |
         mkdir app/static
-        cp front_end/dist/.* app/static
+        mv front_end/dist/* app/static/
     - name: Get Version
       id: vars
       run: echo ::set-output name=RELEASE_VERSION::$(echo ${GITHUB_REF:11})
