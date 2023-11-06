@@ -17,7 +17,7 @@ def project_path():
 # APP
 SERVER_PORT = '80'
 # DB
-DB_FOLDER_NAME = 'sqlite'
+DB_FOLDER_NAME = 'sqlite/db'
 DB_FILE_NAME = 'app.db'
 DB_INIT_SQL_FILE_NAME = 'init.sql'
 # LOG
