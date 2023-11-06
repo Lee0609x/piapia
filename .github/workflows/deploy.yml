@@ -25,11 +25,11 @@ jobs:
     - name: Get Version
       run: echo "RELEASE_VERSION=${GITHUB_REF:11}" >> "$GITHUB_ENV"
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag lee0609x/python-training:${{ steps.vars.outputs.RELEASE_VERSION }}
+      run: docker build . --file Dockerfile --tag lee0609x/python-training:$RELEASE_VERSION
     - name: Login to Registry
       run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
     - name: Push Image
-      run: docker push lee0609x/python-training:${{ steps.vars.outputs.RELEASE_VERSION }}
+      run: docker push lee0609x/python-training:$RELEASE_VERSION
     - name: SSH
       uses: appleboy/ssh-action@v1.0.0
       with:
@@ -38,8 +38,8 @@ jobs:
         password: ${{ secrets.CLOUD_PASSWORD }}
         port: 22
         script: |
-          docker pull lee0609x/python-training:${{ RELEASE_VERSION }}
+          docker pull lee0609x/python-training:$RELEASE_VERSION
           docker stop python-training
           docker rm `docker ps -a | grep Exited | grep python-training | awk '{print $1}'`
           docker rmi `docker images | grep none | grep "lee0609x/python-training" | awk '{print $3}'`
-          docker run --name python-training -p 80:80 -d lee0609x/python-training:${{ RELEASE_VERSION }}
+          docker run --name python-training -p 80:80 -d lee0609x/python-training:$RELEASE_VERSION
