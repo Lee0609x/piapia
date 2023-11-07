@@ -7,13 +7,10 @@ import sqlite3
 import os
 import settings
 from loguru import logger
-from flask_sqlalchemy import SQLAlchemy
 
 '''
 初始化数据库
 '''
-
-db = SQLAlchemy()
 
 
 def init_sqlite():

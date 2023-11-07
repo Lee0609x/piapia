@@ -4,7 +4,7 @@
 __author__ = 'Lee0609x@163.com'
 
 from app.model.user import User
-from app.db.database import db
+from app.database import db
 
 '''
 auth service

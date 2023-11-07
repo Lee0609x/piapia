@@ -8,7 +8,7 @@ import os
 from flask import Flask
 import settings
 from app.api.auth import manager as auth_manager
-from app.db.database import db
+from app.database import db
 
 '''
 flask app

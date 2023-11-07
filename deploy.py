@@ -5,7 +5,7 @@ __author__ = 'Lee0609x@163.com'
 
 from loguru import logger
 
-from app.db.database import init_sqlite
+from app.db.sqlite import init_sqlite
 from app.log.log_init import init_loguru
 from app import server
 
