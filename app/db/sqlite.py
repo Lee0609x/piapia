@@ -14,7 +14,7 @@ from loguru import logger
 
 
 def init_sqlite():
-    logger.info('初始化sqlite...')
+    logger.info('检查sqlite...')
     sqlite_folder = os.path.join(settings.project_path(), settings.DB_FOLDER_NAME)
     sqlite = os.path.join(sqlite_folder, settings.DB_FILE_NAME)
     sql_script = os.path.join(settings.project_path(), settings.DB_INIT_SQL_FOLDER_NAME, settings.DB_INIT_SQL_FILE_NAME)
@@ -27,4 +27,4 @@ def init_sqlite():
             sql_text = f.read()
         conn.executescript(sql_text)
     else:
-        pass
+        logger.info('数据库已存在，使用现有数据库')

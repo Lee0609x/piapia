@@ -3,10 +3,6 @@
 
 __author__ = 'Lee0609x@163.com'
 
-from flask_sqlalchemy import SQLAlchemy
-
-'''
-orm
 '''
 
-db = SQLAlchemy()
+'''

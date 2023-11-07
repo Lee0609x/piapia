@@ -3,10 +3,10 @@
 
 __author__ = 'Lee0609x@163.com'
 
-from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 
 '''
-orm
+flask login
 '''
 
-db = SQLAlchemy()
+login_manager = LoginManager()

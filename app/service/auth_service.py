@@ -17,3 +17,7 @@ class AuthService:
         # 创建用户
         db.session.add(User(name='测试用户', username='test', userpass='test'))
         db.session.commit()
+
+    def queryUser(self, **user_info):
+        # 查询用户
+        return User.query.filter_by(**user_info).first()
