@@ -4,4 +4,4 @@ CREATE TABLE app_user (
 	username TEXT NOT NULL,
 	userpass TEXT NOT NULL
 );
-INSERT INTO app_user (name, username, userpass) VALUES ('管理员', 'admin', 'admin');
+INSERT INTO app_user (name, username, userpass) VALUES ('管理员', 'admin', 'scrypt:32768:8:1$wYHuI824WmEsQdml$3fa5c4fe8179089617c6719b8308a01d9ab80c992243c02771c8b4d3d2eabdc435297f9462f20f50056ad2ec191a1eda25cd6b9d37f82c1691c177b4ccd6ebca');

@@ -11,6 +11,7 @@ from app.api.auth import manager as auth_manager
 from app.auth import login_manager
 from app.database import db
 from loguru import logger
+from flask_cors import CORS
 
 from app.exception.business_exception import BusinessException
 from app.util import response_util
@@ -26,7 +27,10 @@ app.register_blueprint(auth_manager, url_prefix=f'{settings.API_PREFIX}/auth')
 # 权限模块
 app.secret_key = settings.SECRET_KEY
 login_manager.init_app(app)
-login_manager.login_view = '/'
+# 未登录时跳转
+login_manager.login_view = f'{settings.API_PREFIX}/auth/need_login'
+# CORS配置，开发环境前后端分离时使用
+CORS(app, origins='http://localhost:8080')
 # SQLAlchemy初始化
 sqlite = os.path.join(settings.project_path(), settings.DB_FOLDER_NAME, settings.DB_FILE_NAME)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + sqlite
@@ -49,13 +53,13 @@ def page_404(error):
 
 @app.errorhandler(BusinessException)
 def business_exception(error):
-    logger.info(f'业务异常:{error}')
+    logger.info(f'业务异常:{error.message}')
     return response_util.business_error(message=error.message)
 
 
 @app.errorhandler(Exception)
 def exception(error):
-    logger.info(f'系统异常:{error}')
+    logger.exception(error)
     return response_util.business_error(message='系统异常')
 
 

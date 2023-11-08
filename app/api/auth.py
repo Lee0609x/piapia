@@ -26,14 +26,22 @@ def load_user(user_id):
 
 @manager.route('/login', methods=['POST'])
 def login():
-    username = request.form['username']
-    userpass = request.form['userpass']
+    request_param = request.get_json()
+    username = request_param.get('username')
+    userpass = request_param.get('userpass')
     user = AuthService().queryUser(username=username)
+    if not user:
+        raise BusinessException(message='用户名或密码错误')
     if user.username == username and user.validate_password(userpass):
         login_user(user)
         return response_util.business_success(message='登录成功')
     else:
         raise BusinessException(message='用户名或密码错误')
+
+
+@manager.route('/need_login')
+def need_login():
+    return response_util.need_login()
 
 
 @manager.route('/logout')
