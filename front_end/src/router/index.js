@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import login from '@/auth/login'
+import home from '@/views/home'
+import login from '@/views/auth/login'
 
 Vue.use(Router)
 
@@ -9,8 +9,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'home',
+      component: home
     },
     {
       path: '/login',
@@ -20,7 +20,7 @@ export default new Router({
     {
       path: '/404',
       name: 'NotFound',
-      component: () => import('@/error/404')
+      component: () => import('@/views/error/404')
     },
     {
       path: '*',

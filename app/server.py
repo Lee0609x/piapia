@@ -30,7 +30,11 @@ login_manager.init_app(app)
 # 未登录时跳转
 login_manager.login_view = f'{settings.API_PREFIX}/auth/need_login'
 # CORS配置，开发环境前后端分离时使用
-CORS(app, origins='http://localhost:8080')
+# 将会为响应添加头:
+# Access-Control-Allow-Credentials:true
+# Access-Control-Allow-Origin:http://localhost:8080
+if settings.DEPLOY_ENV == 'dev':
+    CORS(app, origins='http://localhost:8080', supports_credentials=True)
 # SQLAlchemy初始化
 sqlite = os.path.join(settings.project_path(), settings.DB_FOLDER_NAME, settings.DB_FILE_NAME)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + sqlite

@@ -4,7 +4,7 @@
 __author__ = 'Lee0609x@163.com'
 
 from flask import Blueprint, request
-from flask_login import login_required, user_logged_in, user_logged_out, login_user
+from flask_login import login_required, logout_user, login_user
 
 from app.exception.business_exception import BusinessException
 from app.auth import login_manager
@@ -34,7 +34,7 @@ def login():
         raise BusinessException(message='用户名或密码错误')
     if user.username == username and user.validate_password(userpass):
         login_user(user)
-        return response_util.business_success(message='登录成功')
+        return response_util.business_success(message='登录成功', data=dict(name=user.name, user_id=user.id))
     else:
         raise BusinessException(message='用户名或密码错误')
 
@@ -47,4 +47,11 @@ def need_login():
 @manager.route('/logout')
 @login_required
 def logout():
-    return 'test'
+    logout_user()
+    return response_util.business_success(message='退出成功')
+
+
+@manager.route('/test')
+@login_required
+def test():
+    return "test"

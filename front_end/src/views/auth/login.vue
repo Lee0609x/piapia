@@ -26,7 +26,10 @@ export default {
   },
   methods: {
     login() {
-      this.$axios.post('api/auth/login', this.loginInfo).then(resp => {
+      this.$axios.post('/auth/login', this.loginInfo).then(resp => {
+        console.log(resp)
+        localStorage.setItem('name', resp.data.name);
+        localStorage.setItem('userId', resp.data.user_id);
         this.$router.push('/')
       })
     }

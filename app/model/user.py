@@ -20,6 +20,11 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(64), nullable=False)
     userpass = db.Column(db.String(128), nullable=False)
 
+    def __init__(self, name, username, userpass):
+        self.name = name
+        self.username = username
+        self.userpass = userpass
+
     def set_password(self, password):
         self.userpass = generate_password_hash(password)
 
