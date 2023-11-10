@@ -4,7 +4,7 @@
 __author__ = 'Lee0609x@163.com'
 
 from flask import Blueprint, request
-from flask_login import login_required, logout_user, login_user
+from flask_login import login_required, logout_user, login_user, current_user
 
 from app.exception.business_exception import BusinessException
 from app.auth import login_manager
@@ -51,7 +51,15 @@ def logout():
     return response_util.business_success(message='退出成功')
 
 
+@manager.route('/current_user')
+@login_required
+def get_current_user():
+    return response_util.business_success(data=dict(name=current_user.name, user_id=current_user.id))
+
+
 @manager.route('/test')
 @login_required
 def test():
-    return "test"
+    current = current_user
+    print(current)
+    return "ok"

@@ -6,8 +6,11 @@ __author__ = 'Lee0609x@163.com'
 import os
 
 from flask import Flask
+from flask_login import login_required
+
 import settings
 from app.api.auth import manager as auth_manager
+from app.api.sse import manager as sse_manager
 from app.auth import login_manager
 from app.database import db
 from loguru import logger
@@ -24,6 +27,7 @@ app = Flask(__name__, static_url_path='/')
 app.json.ensure_ascii = False
 # 蓝图注册
 app.register_blueprint(auth_manager, url_prefix=f'{settings.API_PREFIX}/auth')
+app.register_blueprint(sse_manager, url_prefix=f'{settings.API_PREFIX}/sse')
 # 权限模块
 app.secret_key = settings.SECRET_KEY
 login_manager.init_app(app)
@@ -34,7 +38,7 @@ login_manager.login_view = f'{settings.API_PREFIX}/auth/need_login'
 # Access-Control-Allow-Credentials:true
 # Access-Control-Allow-Origin:http://localhost:8080
 if settings.DEPLOY_ENV == 'dev':
-    CORS(app, origins='http://localhost:8080', supports_credentials=True)
+    CORS(app, origins=settings.FRONT_END_ORIGIN, supports_credentials=True)
 # SQLAlchemy初始化
 sqlite = os.path.join(settings.project_path(), settings.DB_FOLDER_NAME, settings.DB_FILE_NAME)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + sqlite
@@ -42,6 +46,7 @@ db.init_app(app)
 
 
 @app.route('/')
+@login_required
 def index():
     return app.send_static_file('index.html')
 

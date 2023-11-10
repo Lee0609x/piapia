@@ -18,6 +18,7 @@ def project_path():
 SERVER_PORT = '80'
 SECRET_KEY = 'piapia'
 DEPLOY_ENV = 'dev'  # 部署环境，dev/prod
+FRONT_END_ORIGIN = 'http://localhost:8080'
 # DB
 DB_FOLDER_NAME = 'sqlite/db'
 DB_FILE_NAME = 'app.db'

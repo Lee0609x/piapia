@@ -5,7 +5,7 @@ import login from '@/views/auth/login'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -29,3 +29,4 @@ export default new Router({
   ],
   mode: 'history'
 })
+export default router
