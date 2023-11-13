@@ -46,7 +46,6 @@ db.init_app(app)
 
 
 @app.route('/')
-@login_required
 def index():
     return app.send_static_file('index.html')
 
