@@ -6,11 +6,10 @@ __author__ = 'Lee0609x@163.com'
 import os
 
 from flask import Flask
-from flask_login import login_required
 
 import settings
 from app.api.auth import manager as auth_manager
-from app.api.sse import manager as sse_manager
+from app.api.chat import manager as chat_manager
 from app.auth import login_manager
 from app.database import db
 from loguru import logger
@@ -27,7 +26,7 @@ app = Flask(__name__, static_url_path='/')
 app.json.ensure_ascii = False
 # 蓝图注册
 app.register_blueprint(auth_manager, url_prefix=f'{settings.API_PREFIX}/auth')
-app.register_blueprint(sse_manager, url_prefix=f'{settings.API_PREFIX}/sse')
+app.register_blueprint(chat_manager, url_prefix=f'{settings.API_PREFIX}/chat')
 # 权限模块
 app.secret_key = settings.SECRET_KEY
 login_manager.init_app(app)
