@@ -38,18 +38,20 @@ def push():
 
 def chat_event_stream():
     while True:
+        print('尝试获取锁')
         condition.acquire()
         print('acquire')
         if not queue:
             print('waiting')
             condition.wait()
         message = queue.pop(0)
-        yield f'data: {message}\n'
+        yield f'id: 1\nevent: chat\ndata: {message}\n\n'
         print('release')
         condition.release()
 
 
 def produce(message):
+    print('p-尝试获取锁')
     condition.acquire()
     print('p-acquire')
     queue.append(message)
@@ -68,5 +70,3 @@ class ChatConsumer:
     def consume(self):
         while True:
             condition.acquire()
-
-

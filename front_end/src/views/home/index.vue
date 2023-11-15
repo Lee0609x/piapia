@@ -25,7 +25,7 @@ export default {
   },
   mounted() {
     let source = new EventSource(process.env.BASE_URL + '/chat/online', { withCredentials: true });
-    source.addEventListener('greeting', function(event) {
+    source.addEventListener('chat', function(event) {
         console.log(event);
     }, false);
   },
