@@ -3,10 +3,14 @@
 
 __author__ = 'Lee0609x@163.com'
 
+import time
+import random
+import queue
+from threading import Condition
+
 from flask import Blueprint, request
 from flask_login import login_required
-from loguru import logger
-from threading import Condition, Thread
+
 from app.util import response_util
 
 '''
@@ -15,7 +19,7 @@ chat
 
 manager = Blueprint('chat', __name__)
 
-queue = []
+chatQueue = queue.Queue(maxsize=10)
 condition = Condition()
 chatUser = []
 
@@ -23,11 +27,12 @@ chatUser = []
 @manager.route('/online')
 @login_required
 def online():
-    return response_util.sse_response(chat_event_stream())
+    chat_id = random.randint(1, 1000)
+    return response_util.sse_response(chat_event_stream(chat_id))
 
 
 @manager.route('/push', methods=['POST'])
-# @login_required
+@login_required
 def push():
     request_param = request.get_json()
     message = request_param.get('message')
@@ -36,29 +41,16 @@ def push():
     return response_util.business_success()
 
 
-def chat_event_stream():
+def chat_event_stream(chat_id):
     while True:
-        print('尝试获取锁')
-        condition.acquire()
-        print('acquire')
-        if not queue:
-            print('waiting')
-            condition.wait()
-        message = queue.pop(0)
-        yield f'id: 1\nevent: chat\ndata: {message}\n\n'
-        print('release')
-        condition.release()
+        print("myId:" + str(chat_id))
+        message = chatQueue.get()
+        response_message = f'id: {chat_id}\nevent: chat\ndata: {message}\n\n'
+        yield response_message
 
 
 def produce(message):
-    print('p-尝试获取锁')
-    condition.acquire()
-    print('p-acquire')
-    queue.append(message)
-    print('p-notify')
-    condition.notify_all()
-    print('p-release')
-    condition.release()
+    chatQueue.put(message)
 
 
 class ChatConsumer:

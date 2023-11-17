@@ -2,9 +2,18 @@
   <div>
     <commonHeader/>
     <div style="width: 100%; height: auto; position: absolute; top: 70px; ">
-      <el-button @click="logout">test</el-button>
-      <br/>
-      <el-button @click="test">test2</el-button>
+      <div style="width: 30%; position: absolute; left: 10px; top: 10px;">
+        <el-input
+          style="height: 60%;"
+          type="textarea"
+          readonly
+          resize="none"
+          v-model="chatContent">
+        </el-input>
+        <el-input placeholder="请输入想说的话" v-model="messageInfo.message">
+          <template slot="append"><el-button type="primary" @click="sendMessage">发送</el-button></template>
+        </el-input>
+      </div>
     </div>
     <commonFooter/>
   </div>
@@ -21,15 +30,33 @@ export default {
   },
   data () {
     return {
+      chatContent: 'a',
+      messageInfo: {
+        "message": ''
+      },
     }
   },
   mounted() {
-    let source = new EventSource(process.env.BASE_URL + '/chat/online', { withCredentials: true });
-    source.addEventListener('chat', function(event) {
-        console.log(event);
-    }, false);
+    const chatEsClient = new EventSource(process.env.BASE_URL + '/chat/online', { withCredentials: true });
+    var self = this;
+    chatEsClient.addEventListener('chat', this.chatListener, false);
+    chatEsClient.onerror = function(e) {
+      if (EventSource.CLOSED == e.target.readyState) {
+        console.log('client close-----');
+        chatEsClient.close();
+      }
+    };
   },
   methods: {
+    chatListener(event) {
+      this.chatContent = this.chatContent.concat(event.data, '\n');
+      console.log('???' + this.chatContent);
+    },
+    sendMessage() {
+      this.$axios.post('/chat/push', this.messageInfo).then(resp =>{
+        console.log('push success');
+      })
+    },
     logout() {
       this.$axios.get('/auth/logout').then(resp => {
         console.log(resp);
