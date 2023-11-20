@@ -13,11 +13,13 @@ auth service
 
 class AuthService:
 
-    def createUser(self):
+    def create_user(self, name, username, userpass):
         # 创建用户
-        db.session.add(User(name='测试用户', username='test', userpass='test'))
+        user = User(name=name, username=username, userpass=userpass)
+        db.session.add(user)
         db.session.commit()
+        return user
 
-    def queryUser(self, **user_info):
+    def query_user(self, **user_info):
         # 查询用户
         return User.query.filter_by(**user_info).first()

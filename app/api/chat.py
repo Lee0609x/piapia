@@ -3,14 +3,10 @@
 
 __author__ = 'Lee0609x@163.com'
 
-import time
-import random
-import queue
-from threading import Condition
-
 from flask import Blueprint, request
-from flask_login import login_required
+from flask_login import login_required, current_user
 
+from app.service.message_announcer import chat_announcer
 from app.util import response_util
 
 '''
@@ -19,46 +15,36 @@ chat
 
 manager = Blueprint('chat', __name__)
 
-chatQueue = queue.Queue(maxsize=10)
-condition = Condition()
-chatUser = []
-
 
 @manager.route('/online')
 @login_required
 def online():
-    chat_id = random.randint(1, 1000)
-    return response_util.sse_response(chat_event_stream(chat_id))
+    user_id = current_user.id
+    name = current_user.name
+    return response_util.sse_response(chat_event_stream(
+        format_sse_message(user_id, 'chat', f'欢迎{name}进入聊天室')))
 
 
 @manager.route('/push', methods=['POST'])
 @login_required
 def push():
+    user_id = current_user.id
+    name = current_user.name
     request_param = request.get_json()
     message = request_param.get('message')
     if message is not None and message != '':
-        produce(message)
+        sse_message = format_sse_message(user_id, 'chat', f'{name}：{message}')
+        chat_announcer.announce(sse_message)
     return response_util.business_success()
 
 
-def chat_event_stream(chat_id):
+def chat_event_stream(hello_message):
+    message_queue = chat_announcer.listen()
+    chat_announcer.announce(hello_message)
     while True:
-        print("myId:" + str(chat_id))
-        message = chatQueue.get()
-        response_message = f'id: {chat_id}\nevent: chat\ndata: {message}\n\n'
-        yield response_message
+        sse_message = message_queue.get()
+        yield sse_message
 
 
-def produce(message):
-    chatQueue.put(message)
-
-
-class ChatConsumer:
-    session_id = None
-
-    def __init__(self, session_id):
-        self.session_id = session_id
-
-    def consume(self):
-        while True:
-            condition.acquire()
+def format_sse_message(user_id, event, message):
+    return f'id: {user_id}\nevent: {event}\ndata: {message}\n\n'

@@ -24,17 +24,36 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+@manager.route('/register', methods=['POST'])
+def register():
+    request_param = request.get_json()
+    username = request_param.get('username')
+    userpass = request_param.get('userpass')
+    nickname = request_param.get('nickname')
+    if not username or not userpass or not nickname:
+        raise BusinessException(message='用户昵称，用户名，密码都需要填写')
+    auth_service = AuthService()
+    if auth_service.query_user(username=username) is not None:
+        raise BusinessException(message='用户名已存在')
+    if auth_service.query_user(name=nickname) is not None:
+        raise BusinessException(message='用户昵称已存在')
+    user = AuthService().create_user(nickname, username, userpass)
+    # 注册后自动登录
+    login_user(user)
+    return response_util.business_success(message='登录成功')
+
+
 @manager.route('/login', methods=['POST'])
 def login():
     request_param = request.get_json()
     username = request_param.get('username')
     userpass = request_param.get('userpass')
-    user = AuthService().queryUser(username=username)
+    user = AuthService().query_user(username=username)
     if not user:
         raise BusinessException(message='用户名或密码错误')
     if user.username == username and user.validate_password(userpass):
         login_user(user)
-        return response_util.business_success(message='登录成功', data=dict(name=user.name, user_id=user.id))
+        return response_util.business_success(message='登录成功')
     else:
         raise BusinessException(message='用户名或密码错误')
 
@@ -55,11 +74,3 @@ def logout():
 @login_required
 def get_current_user():
     return response_util.business_success(data=dict(name=current_user.name, user_id=current_user.id))
-
-
-@manager.route('/test')
-@login_required
-def test():
-    current = current_user
-    print(current)
-    return "ok"

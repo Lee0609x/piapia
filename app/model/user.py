@@ -23,7 +23,7 @@ class User(db.Model, UserMixin):
     def __init__(self, name, username, userpass):
         self.name = name
         self.username = username
-        self.userpass = userpass
+        self.userpass = generate_password_hash(userpass)
 
     def set_password(self, password):
         self.userpass = generate_password_hash(password)
