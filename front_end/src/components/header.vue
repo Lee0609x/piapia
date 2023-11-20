@@ -16,7 +16,7 @@
           <el-badge is-dot style="position: absolute; top: 25%; left: 60px;">
             <el-button size="small" @click="clockIn">签到</el-button>
           </el-badge>
-          <el-button size="small" style="position: absolute; top: 25%; left: 130px;" @click="logout">退出</el-button>
+          <el-button size="small" style="position: absolute; top: 25%; left: 130px;" type="danger" @click="logout">退出</el-button>
         </span>
       </el-menu>
     </div>

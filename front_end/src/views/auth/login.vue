@@ -2,7 +2,7 @@
   <div>
     <div style="position: absolute; transform: translate(-50%, -50%); top: 50%; left: 50%; width: 25%;">
       <div>
-        <el-form ref="form" label-position="left" :model="loginInfo" @keyup.enter.native="login" label-width="80px">
+        <el-form label-position="left" :model="loginInfo" @keyup.enter.native="login" label-width="80px">
           <el-form-item label="用户名">
             <el-input v-model="loginInfo.username"></el-input>
           </el-form-item>
