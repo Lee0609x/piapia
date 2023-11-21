@@ -40,7 +40,7 @@ def register():
     user = AuthService().create_user(nickname, username, userpass)
     # 注册后自动登录
     login_user(user)
-    return response_util.business_success(message='登录成功')
+    return response_util.business_success(message='登录成功', data=dict(name=current_user.name, user_id=current_user.id))
 
 
 @manager.route('/login', methods=['POST'])
@@ -53,7 +53,8 @@ def login():
         raise BusinessException(message='用户名或密码错误')
     if user.username == username and user.validate_password(userpass):
         login_user(user)
-        return response_util.business_success(message='登录成功')
+        return response_util.business_success(message='登录成功',
+                                              data=dict(name=current_user.name, user_id=current_user.id))
     else:
         raise BusinessException(message='用户名或密码错误')
 

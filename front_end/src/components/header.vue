@@ -25,42 +25,44 @@
 
 <script>
 import router from '@/router'
-  export default {
-    data() {
-      return {
-        userId: '',
-        name: ''
-      };
+import { removeLoginMark } from '@/util/auth'
+export default {
+  data() {
+    return {
+      userId: '',
+      name: ''
+    };
+  },
+  methods: {
+    currentUser() {
+      this.$axios.get('/auth/current_user').then(resp => {
+        //localStorage.setItem('name', resp.data.name);
+        //localStorage.setItem('userId', resp.data.user_id);
+        this.userId = resp.data.user_id;
+        this.name = resp.data.name;
+      })
     },
-    methods: {
-      currentUser() {
-        this.$axios.get('/auth/current_user').then(resp => {
-          localStorage.setItem('name', resp.data.name);
-          localStorage.setItem('userId', resp.data.user_id);
-          this.userId = resp.data.user_id;
-          this.name = resp.data.name;
-        })
-      },
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      logout() {
-        this.$axios.get('/auth/logout').then(resp => {
-          this.$message({
-            message: '你已退出当前用户',
-            type: 'success'
-          });
-          router.push('/login');
-        })
-      },
-      clockIn() {
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    logout() {
+      this.$axios.get('/auth/logout').then(resp => {
         this.$message({
-          message: '你点了一下签到，这并没有什么卵用',
-        })
-      }
+          message: '你已退出当前用户',
+          type: 'success'
+        });
+        removeLoginMark();
+        router.push('/login');
+      })
     },
-    created() {
-      this.currentUser();
+    clockIn() {
+      this.$message({
+        message: '你点了一下签到，这并没有什么卵用',
+      })
     }
+  },
+  created() {
+    this.currentUser();
   }
+}
 </script>

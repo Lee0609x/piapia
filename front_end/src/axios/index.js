@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import router from '@/router'
+import { removeLoginMark } from '@/util/auth'
 
 const simpleAxios = axios.create({
   baseURL: process.env.BASE_URL,
@@ -23,6 +24,7 @@ simpleAxios.interceptors.response.use((resp) => {
     Message({
       message: '用户未登录或登录超时，请重新登录'
     });
+    removeLoginMark();
     router.push('/login');
   }
 })

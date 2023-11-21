@@ -29,4 +29,15 @@ const router = new Router({
   ],
   mode: 'history'
 })
+router.beforeEach((to, from, next) => {
+  if (to.fullPath == '/login') {
+    next();
+  } else {
+    if (localStorage.getItem('name') == null) {
+      next('/login');
+    } else {
+      next();
+    }
+  }
+})
 export default router

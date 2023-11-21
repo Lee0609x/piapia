@@ -12,16 +12,12 @@
           v-model="chatContent"
           >
         </el-input>
-        <!-- <el-input placeholder="请输入想说的话" v-model="messageInfo.message" @keyup.enter="sendMessage">
-          <template slot="append"><el-button type="primary" @click="sendMessage">发送</el-button></template>
-        </el-input> -->
-        <el-input 
+        <el-input
           placeholder="请输入想说的话" 
           v-model="messageInfo.message" 
           type="textarea"
           resize="none"
           rows="3"
-          @keyup.enter="sendMessage"
           >
         </el-input>
         <el-button type="primary" @click="sendMessage" style="position: relative; width: 20%; left:40%; bottom: 0px;">发送</el-button>

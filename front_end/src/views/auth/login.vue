@@ -35,6 +35,7 @@
   </div>
 </template>
 <script>
+import { loginMark } from '@/util/auth'
 export default {
   name: 'login',
   data () {
@@ -54,6 +55,7 @@ export default {
   methods: {
     login() {
       this.$axios.post('/auth/login', this.loginInfo).then(resp => {
+        loginMark(resp.data);
         this.$router.push('/');
       })
     },
@@ -72,6 +74,7 @@ export default {
           type: 'success'
         })
         this.dialogFormVisible = false;
+        loginMark(resp.data);
         this.$router.push('/');
       })
     }

@@ -26,6 +26,7 @@ class MessageAnnouncer:
             try:
                 self.listeners[index].put_nowait(message)
             except queue.Full:
+                # 队列无法消费，说明该客户端可能已经离线，删除该连接
                 logger.info(f'消息队列已满，清理监听，index:{index}')
                 del self.listeners[index]
 
