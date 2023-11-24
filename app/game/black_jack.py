@@ -5,7 +5,8 @@ __author__ = 'Lee0609x@163.com'
 
 import random
 
-from app.service.message_announcer import MessageAnnouncer
+from app.game.online_game import OnlineGame
+from app.service.game_announcer import GameAnnouncer
 '''
 
 '''
@@ -59,9 +60,24 @@ class Deck:
 
 
 class Dealer:
-    def __init__(self):
+    def __init__(self, players):
         self.deck = Deck()
-        self.game_announcer = MessageAnnouncer()
+        self.game_announcer = GameAnnouncer()
+        self.players = players
+        for player in players:
+            self.game_announcer.listen(player.user_id)
+
+    def new_game(self):
+        self.game_announcer.announce_all_player()
+
+
+class BlackJack(OnlineGame):
+    def play(self):
+        pass
+
+    def join(self):
+        pass
+
 
 
 

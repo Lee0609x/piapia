@@ -8,6 +8,7 @@ from flask_login import login_required, current_user
 
 from app.service.message_announcer import chat_announcer
 from app.util import response_util
+from app.util.sse_message_util import format_sse_message
 
 '''
 chat
@@ -44,7 +45,3 @@ def chat_event_stream(hello_message):
     while True:
         sse_message = message_queue.get()
         yield sse_message
-
-
-def format_sse_message(user_id, event, message):
-    return f'id: {user_id}\nevent: {event}\ndata: {message}\n\n'

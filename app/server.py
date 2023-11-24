@@ -8,8 +8,8 @@ import os
 from flask import Flask
 
 import settings
-from app.api.auth import manager as auth_manager
-from app.api.chat import manager as chat_manager
+from app.router.auth import manager as auth_manager
+from app.router.chat import manager as chat_manager
 from app.auth import login_manager
 from app.database import db
 from loguru import logger
