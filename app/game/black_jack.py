@@ -3,10 +3,12 @@
 
 __author__ = 'Lee0609x@163.com'
 
+import queue
 import random
 
-from app.game.online_game import OnlineGame
+from app.game.online_game import OnlineGame, OnlineGameFactory
 from app.service.game_announcer import GameAnnouncer
+
 '''
 
 '''
@@ -72,14 +74,22 @@ class Dealer:
 
 
 class BlackJack(OnlineGame):
+
+    def __init__(self):
+        pass
+
     def play(self):
         pass
 
-    def join(self):
+    def join(self, user_id):
         pass
 
 
+class GameFactory(OnlineGameFactory):
+    def __init__(self):
+        self.waiting_game_queue = queue.Queue(1)
 
+    def get_instance(self) -> BlackJack:
+        if self.waiting_game_queue.empty():
 
-
-
+            self.waiting_game_queue.put_nowait()

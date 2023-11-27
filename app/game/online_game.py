@@ -18,5 +18,11 @@ class OnlineGame:
         pass
 
     @abstractmethod
-    def join(self) -> Response:
+    def join(self, user_id) -> Response:
+        pass
+
+
+class OnlineGameFactory:
+    @abstractmethod
+    def get_instance(self) -> OnlineGame:
         pass

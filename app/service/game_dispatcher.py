@@ -3,7 +3,7 @@
 
 __author__ = 'Lee0609x@163.com'
 
-from app.game.online_game import OnlineGame
+from app.game.online_game import OnlineGame, OnlineGameFactory
 
 '''
 
@@ -16,12 +16,10 @@ class GameDispatcher:
         self.context = {}
 
     def dispatch(self, game_name: str) -> OnlineGame:
-        game = type(self.game_dict[game_name], )
-        return self.game_dict[game_name]
+        return self.context[game_name].get_instance()
+
+    def register(self, name: str, game_factory: OnlineGameFactory):
+        self.context[name] = game_factory
 
 
-dispatcher = GameDispatcher
-
-if __name__ == "__main__":
-    test = __import__('app.game.black_jack')
-    print(test)
+dispatcher = GameDispatcher()
