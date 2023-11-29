@@ -4,7 +4,7 @@
 __author__ = 'Lee0609x@163.com'
 
 from flask import Blueprint, request
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from app.service.game_dispatcher import dispatcher
 
@@ -20,7 +20,7 @@ manager = Blueprint('black_jack', __name__)
 def online():
     game_name = request.args.get('game')
     online_game = dispatcher.dispatch(game_name)
-    return online_game.join()
+    return online_game.join(current_user.id)
 
 
 @manager.route('/action', methods=['POST'])

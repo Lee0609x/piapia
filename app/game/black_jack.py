@@ -5,9 +5,12 @@ __author__ = 'Lee0609x@163.com'
 
 import queue
 import random
+from threading import Lock
 
 from app.game.online_game import OnlineGame, OnlineGameFactory
+from app.service.auth_service import auth_service
 from app.service.game_announcer import GameAnnouncer
+from app.util.sse_message_util import format_sse_message
 
 '''
 
@@ -64,32 +67,46 @@ class Deck:
 class Dealer:
     def __init__(self, players):
         self.deck = Deck()
-        self.game_announcer = GameAnnouncer()
-        self.players = players
-        for player in players:
-            self.game_announcer.listen(player.user_id)
-
-    def new_game(self):
-        self.game_announcer.announce_all_player()
 
 
 class BlackJack(OnlineGame):
 
     def __init__(self):
-        pass
+        self.game_announcer = GameAnnouncer()
 
     def play(self):
+
         pass
 
     def join(self, user_id):
-        pass
+        self.game_announcer.listen(user_id)
+        user = auth_service.query_user(id=user_id)
+        message = f'{user.name}加入了游戏'
+        self.game_announcer.announce_all_player(format_sse_message(user_id=user_id, event='message', message=message))
+        return self.game_event_stream(user_id)
+
+    def game_event_stream(self, user_id):
+        while True:
+            yield self.game_announcer.get_queue(user_id).get()
 
 
 class GameFactory(OnlineGameFactory):
+
+    black_jack = None
+    lock = Lock()
+
     def __init__(self):
-        self.waiting_game_queue = queue.Queue(1)
+        self.flag = False
 
     def get_instance(self) -> BlackJack:
-        if self.waiting_game_queue.empty():
-
-            self.waiting_game_queue.put_nowait()
+        try:
+            self.lock.acquire()
+            if GameFactory.black_jack is None:
+                GameFactory.black_jack = BlackJack()
+            else:
+                self.flag = True
+            return GameFactory.black_jack
+        finally:
+            if self.flag:
+                GameFactory.black_jack = None
+            self.lock.release()
