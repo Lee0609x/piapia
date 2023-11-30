@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import home from '@/views/home'
 import login from '@/views/auth/login'
-//import blackJack from '@/view/game/blackJack'
+import blackJack from '@/views/game/blackJack'
+import gameIndex from '@/views/game'
 
 Vue.use(Router)
 
@@ -12,12 +13,16 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: home,
-      // children: [
-      //   {
-      //     path: '/blackJack',
-      //     component: blackJack
-      //   }
-      // ]
+      children: [
+        {
+          path: '',
+          component: gameIndex
+        },
+        {
+          path: 'blackJack',
+          component: blackJack
+        }
+      ]
     },
     {
       path: '/login',

@@ -10,12 +10,15 @@ from flask import Flask
 import settings
 from app.router.auth import manager as auth_manager
 from app.router.chat import manager as chat_manager
+from app.router.game import manager as game_manager
+from app.game.black_jack import GameFactory as BlackJackGameFactory
 from app.auth import login_manager
 from app.database import db
 from loguru import logger
 from flask_cors import CORS
 
 from app.exception.business_exception import BusinessException
+from app.service.game_dispatcher import dispatcher
 from app.util import response_util
 
 '''
@@ -27,6 +30,9 @@ app.json.ensure_ascii = False
 # 蓝图注册
 app.register_blueprint(auth_manager, url_prefix=f'{settings.API_PREFIX}/auth')
 app.register_blueprint(chat_manager, url_prefix=f'{settings.API_PREFIX}/chat')
+app.register_blueprint(game_manager, url_prefix=f'{settings.API_PREFIX}/game')
+# 游戏注册
+dispatcher.register('black_jack', BlackJackGameFactory())
 # 权限模块
 app.secret_key = settings.SECRET_KEY
 login_manager.init_app(app)

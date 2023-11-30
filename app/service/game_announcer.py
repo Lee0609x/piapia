@@ -34,7 +34,7 @@ class GameAnnouncer:
         keys = self.listeners.keys()
         for key in keys:
             try:
-                self.listeners[key].announce(message)
+                self.listeners[key].put_nowait(message)
             except queue.Full:
                 logger.info(f'玩家已离线')
                 self.listeners.pop(self.listeners[key])

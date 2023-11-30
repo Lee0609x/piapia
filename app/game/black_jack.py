@@ -10,6 +10,7 @@ from threading import Lock
 from app.game.online_game import OnlineGame, OnlineGameFactory
 from app.service.auth_service import auth_service
 from app.service.game_announcer import GameAnnouncer
+from app.util import response_util
 from app.util.sse_message_util import format_sse_message
 
 '''
@@ -83,7 +84,7 @@ class BlackJack(OnlineGame):
         user = auth_service.query_user(id=user_id)
         message = f'{user.name}加入了游戏'
         self.game_announcer.announce_all_player(format_sse_message(user_id=user_id, event='message', message=message))
-        return self.game_event_stream(user_id)
+        return response_util.sse_response(self.game_event_stream(user_id))
 
     def game_event_stream(self, user_id):
         while True:
