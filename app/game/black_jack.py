@@ -81,8 +81,9 @@ class BlackJack(OnlineGame):
 
     def join(self, user_id):
         self.game_announcer.listen(user_id)
+        keys = self.game_announcer.listeners.keys()
         user = auth_service.query_user(id=user_id)
-        message = f'{user.name}加入了游戏'
+        message = f'{user.name}加入了游戏，keys: {keys}'
         self.game_announcer.announce_all_player(format_sse_message(user_id=user_id, event='message', message=message))
         return response_util.sse_response(self.game_event_stream(user_id))
 
@@ -93,21 +94,20 @@ class BlackJack(OnlineGame):
 
 class GameFactory(OnlineGameFactory):
 
-    black_jack = None
-    lock = Lock()
-
     def __init__(self):
-        self.flag = False
+        self.black_jack = None
+        self.lock = Lock()
 
     def get_instance(self) -> BlackJack:
+        flag = False
         try:
             self.lock.acquire()
-            if GameFactory.black_jack is None:
-                GameFactory.black_jack = BlackJack()
+            if self.black_jack is None:
+                self.black_jack = BlackJack()
             else:
-                self.flag = True
-            return GameFactory.black_jack
+                flag = True
+            return self.black_jack
         finally:
-            if self.flag:
-                GameFactory.black_jack = None
+            if flag:
+                self.black_jack = None
             self.lock.release()

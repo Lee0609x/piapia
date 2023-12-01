@@ -18,7 +18,6 @@ class GameAnnouncer:
         self.listeners = {}
 
     def listen(self, user_id):
-        self.listeners = {}
         game_queue = queue.Queue(2)
         self.listeners[user_id] = game_queue
         return game_queue
