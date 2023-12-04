@@ -3,7 +3,6 @@
 
 __author__ = 'Lee0609x@163.com'
 
-import queue
 import random
 from threading import Lock
 
@@ -99,15 +98,16 @@ class GameFactory(OnlineGameFactory):
         self.lock = Lock()
 
     def get_instance(self) -> BlackJack:
-        flag = False
+        can_start = False
         try:
             self.lock.acquire()
             if self.black_jack is None:
+                # 每一个实例都是一个新的对局
                 self.black_jack = BlackJack()
             else:
-                flag = True
+                can_start = True
             return self.black_jack
         finally:
-            if flag:
+            if can_start:
                 self.black_jack = None
             self.lock.release()
