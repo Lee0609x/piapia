@@ -13,4 +13,5 @@ CREATE TABLE IF NOT EXISTS app_player (
     wins INTEGER NOT NULL DEFAULT 0,
     loss INTEGER NOT NULL DEFAULT 0
 );
+INSERT INTO app_player (user_id) VALUES (1);
 
