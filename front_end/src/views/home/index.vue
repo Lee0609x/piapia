@@ -2,7 +2,7 @@
   <div>
     <commonHeader/>
     <div style="width: 100%; height: auto; position: absolute; top: 70px; ">
-      <div style="width: 60%; position: absolute; left: 10px; top: 10px;">
+      <div style="width: 65%; position: absolute; left: 10px; top: 10px;">
         <router-view></router-view>
       </div>
       <div style="width: 30%; position: absolute; right: 10px; top: 10px;">
