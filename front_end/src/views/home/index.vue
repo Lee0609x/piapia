@@ -1,30 +1,36 @@
 <template>
   <div>
     <commonHeader/>
-    <div style="width: 100%; height: auto; position: absolute; top: 70px; ">
-      <div style="width: 65%; position: absolute; left: 10px; top: 10px;">
-        <router-view></router-view>
-      </div>
-      <div style="width: 30%; position: absolute; right: 10px; top: 10px;">
-        <el-input
-          rows="25"
-          id="chatTextarea"
-          type="textarea"
-          readonly
-          resize="none"
-          v-model="chatContent"
-          >
-        </el-input>
-        <el-input
-          placeholder="请输入想说的话" 
-          v-model="messageInfo.message" 
-          type="textarea"
-          resize="none"
-          rows="3"
-          >
-        </el-input>
-        <el-button type="primary" @click="sendMessage" style="position: relative; width: 20%; left:40%; bottom: 0px;">发送</el-button>
-      </div>
+    <div>
+      <el-row :gutter="10" style="padding-top: 80px; padding-left: 10px; padding-right: 10px;">
+        <el-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
+          <div>
+            <router-view></router-view>
+          </div>
+        </el-col>
+        <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+          <div>
+            <el-input
+              rows="25"
+              id="chatTextarea"
+              type="textarea"
+              readonly
+              resize="none"
+              v-model="chatContent"
+              >
+            </el-input>
+            <el-input
+              placeholder="请输入想说的话" 
+              v-model="messageInfo.message" 
+              type="textarea"
+              resize="none"
+              rows="3"
+              >
+            </el-input>
+            <el-button type="primary" @click="sendMessage" style="position: relative; width: 20%; left:40%; bottom: 0px;">发送</el-button>
+          </div>
+        </el-col>
+      </el-row>
     </div>
     <commonFooter/>
   </div>
