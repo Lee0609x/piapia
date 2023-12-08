@@ -2,7 +2,7 @@
   <div>
     <commonHeader/>
     <div>
-      <el-row :gutter="10" style="padding-top: 80px; padding-left: 10px; padding-right: 10px;">
+      <el-row style="padding-top: 80px; padding-left: 10px; padding-right: 10px;">
         <el-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
           <div>
             <router-view></router-view>

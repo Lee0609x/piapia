@@ -12,7 +12,7 @@ from app.service.game_dispatcher import dispatcher
 21
 '''
 
-manager = Blueprint('black_jack', __name__)
+manager = Blueprint('game', __name__)
 
 
 @manager.route('/online')
