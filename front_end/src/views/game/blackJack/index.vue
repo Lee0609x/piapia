@@ -10,8 +10,6 @@ export default {
   mounted() {
     const game = new PIXI.Application({
     });
-    //document.body.appendChild(game.view);
-    
     const gameBox = document.getElementById('gameBox');
     gameBox.appendChild(game.view);
     game.renderer.backgroundColor = 0xF9F9F9;
